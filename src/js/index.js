@@ -36,6 +36,7 @@ divElementButtons.appendChild(drawButtonElementCard);
 const restartButtonElementCard = document.createElement("button");
 restartButtonElementCard.textContent = "Restart Game";
 restartButtonElementCard.setAttribute("id", "restart-button");
+restartButtonElementCard.classList.add("button-78");
 restartButtonElementCard.style.display = "none";
 divElementButtons.appendChild(restartButtonElementCard);
 
@@ -43,6 +44,10 @@ divElementButtons.appendChild(restartButtonElementCard);
 const divElementCard = document.createElement("div");
 divElementCard.setAttribute("id", "card-display");
 divElementCards.appendChild(divElementCard);
+
+// Constants for audio files
+const shuffleSound = new Audio('src/sounds/barajar.mp3');
+const drawCardSound = new Audio('src/sounds/robarCarta.mp3');
 
 // Generate deck
 let deck = [];
@@ -125,7 +130,7 @@ function drawCard() {
                                   <div class="card-info-rever">
                                     <img class="mini-ico" src="${card.icon}">
                                     <div class="type-desc-rever">
-                                      <p class="card-text-rever">${card.type}&nbsp;&nbsp;&nbsp;${card.value || ''}</p>
+                                      <p class="card-text-rever">${card.type}   ${card.value || ''}</p>
                                       <p class="card-desc-rever">${card.description}</p>
                                     </div>
                                   </div>
@@ -153,11 +158,23 @@ function restartGame() {
   restartButtonElementCard.style.display = "none";
 }
 
+// Function to play sound
+function playSound(sound) {
+  sound.play();
+}
+
 // Initial Setup
 generateDeck();
 randomize(deck);
 console.log(deck);
 
 // Add event listeners for the buttons
-drawButtonElementCard.addEventListener("click", drawCard);
-restartButtonElementCard.addEventListener("click", restartGame);
+drawButtonElementCard.addEventListener("click", () => {
+  drawCard();
+  playSound(drawCardSound);
+});
+
+restartButtonElementCard.addEventListener("click", () => {
+  restartGame();
+  playSound(shuffleSound);
+});
