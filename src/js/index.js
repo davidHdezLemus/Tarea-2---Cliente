@@ -10,10 +10,26 @@ import {
 } from './constants.js';
 import { Card } from './card.js';
 
+// Container for the screen
+const divScreenElementBody = document.createElement("div");
+divScreenElementBody.setAttribute("id", "screen-container");
+BODY_ELEMENT.appendChild(divScreenElementBody);
+
+// Container for the h1
+const divH1ElementBody = document.createElement("div");
+divH1ElementBody.setAttribute("id", "divh1-container");
+divScreenElementBody.appendChild(divH1ElementBody);
+
+// Container for the game title
+const h1ElementBody = document.createElement("h1");
+h1ElementBody.setAttribute("id", "game-title");
+h1ElementBody.textContent = "Exploding Cards";
+divH1ElementBody.appendChild(h1ElementBody);
+
 // Container for the game
 const divElementBody = document.createElement("div");
 divElementBody.setAttribute("id", "game-container");
-BODY_ELEMENT.appendChild(divElementBody);
+divScreenElementBody.appendChild(divElementBody);
 
 // Container for the buttons
 const divElementButtons = document.createElement("div");
@@ -46,8 +62,8 @@ divElementCard.setAttribute("id", "card-display");
 divElementCards.appendChild(divElementCard);
 
 // Constants for audio files
-const shuffleSound = new Audio('src/sounds/barajar.mp3');
-const drawCardSound = new Audio('src/sounds/robarCarta.mp3');
+const shuffleSound = new Audio('src/sounds/shuffleCards.mp3');
+const drawCardSound = new Audio('src/sounds/drawCard.mp3');
 
 // Generate deck
 let deck = [];
