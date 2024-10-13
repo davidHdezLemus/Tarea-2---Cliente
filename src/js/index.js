@@ -46,6 +46,7 @@ const drawButtonElementCard = document.createElement("button");
 drawButtonElementCard.textContent = "Draw Card";
 drawButtonElementCard.setAttribute("id", "draw-button");
 drawButtonElementCard.classList.add("button-78");
+drawButtonElementCard.style.display = "none"; // Initially hidden
 divElementButtons.appendChild(drawButtonElementCard);
 
 // Restart Button
@@ -56,6 +57,13 @@ restartButtonElementCard.classList.add("button-78");
 restartButtonElementCard.style.display = "none";
 divElementButtons.appendChild(restartButtonElementCard);
 
+// Start Game Button
+const startButtonElement = document.createElement("button");
+startButtonElement.textContent = "Start Game";
+startButtonElement.setAttribute("id", "start-button");
+startButtonElement.classList.add("button-78");
+divElementButtons.appendChild(startButtonElement);
+
 // Div to display cards
 const divElementCard = document.createElement("div");
 divElementCard.setAttribute("id", "card-display");
@@ -64,6 +72,12 @@ divElementCards.appendChild(divElementCard);
 // Constants for audio files
 const shuffleSound = new Audio('src/sounds/shuffleCards.mp3');
 const drawCardSound = new Audio('src/sounds/drawCard.mp3');
+const youLoseSound = new Audio('src/sounds/youLose.mp3');
+const backgroundSound = new Audio('src/sounds/background.mp3');
+
+// Set the volume and loop for the background sound
+backgroundSound.volume = 0.2;
+backgroundSound.loop = true;
 
 // Generate deck
 let deck = [];
@@ -128,29 +142,78 @@ function drawCard() {
     divElementCards.classList.add(card.color);
     currentCardColor = card.color;
 
-    // Update the card display with the new card information
-    divElementCard.innerHTML = `<div class="card">
-                                  <div class="card-info">
-                                    <img class="mini-ico" src="${card.icon}">
-                                    <div class="type-desc">
-                                      <div class="card-text">
-                                        <span>${card.type}</span>
-                                        <span>${card.value || ''}</span>
-                                      </div>
-                                      <p class="card-desc">${card.description}</p>
-                                    </div>
-                                  </div>
-                                  <div class="card-body">
-                                    <img src="${card.icon}">
-                                  </div>
-                                  <div class="card-info-rever">
-                                    <img class="mini-ico" src="${card.icon}">
-                                    <div class="type-desc-rever">
-                                      <p class="card-text-rever">${card.type}   ${card.value || ''}</p>
-                                      <p class="card-desc-rever">${card.description}</p>
-                                    </div>
-                                  </div>
-                                </div>`;
+    // Create card elements individually
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+
+    const cardInfo = document.createElement("div");
+    cardInfo.classList.add("card-info");
+
+    const miniIcon = document.createElement("img");
+    miniIcon.classList.add("mini-ico");
+    miniIcon.src = card.icon;
+
+    const typeDesc = document.createElement("div");
+    typeDesc.classList.add("type-desc");
+
+    const cardText = document.createElement("div");
+    cardText.classList.add("card-text");
+
+    const typeSpan = document.createElement("span");
+    typeSpan.textContent = card.type;
+
+    const valueSpan = document.createElement("span");
+    valueSpan.textContent = card.value || '';
+
+    const cardDesc = document.createElement("p");
+    cardDesc.classList.add("card-desc");
+    cardDesc.textContent = card.description;
+
+    // Append elements to their respective containers
+    cardText.appendChild(typeSpan);
+    cardText.appendChild(valueSpan);
+    typeDesc.appendChild(cardText);
+    typeDesc.appendChild(cardDesc);
+    cardInfo.appendChild(miniIcon);
+    cardInfo.appendChild(typeDesc);
+    cardElement.appendChild(cardInfo);
+
+    const cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+
+    const bodyImg = document.createElement("img");
+    bodyImg.src = card.icon;
+    cardBody.appendChild(bodyImg);
+    cardElement.appendChild(cardBody);
+
+    const cardInfoRever = document.createElement("div");
+    cardInfoRever.classList.add("card-info-rever");
+
+    const miniIconRever = document.createElement("img");
+    miniIconRever.classList.add("mini-ico");
+    miniIconRever.src = card.icon;
+
+    const typeDescRever = document.createElement("div");
+    typeDescRever.classList.add("type-desc-rever");
+
+    const cardTextRever = document.createElement("p");
+    cardTextRever.classList.add("card-text-rever");
+    cardTextRever.textContent = `${card.type} ${card.value || ''}`;
+
+    const cardDescRever = document.createElement("p");
+    cardDescRever.classList.add("card-desc-rever");
+    cardDescRever.textContent = card.description;
+
+    // Append elements to their respective containers
+    typeDescRever.appendChild(cardTextRever);
+    typeDescRever.appendChild(cardDescRever);
+    cardInfoRever.appendChild(miniIconRever);
+    cardInfoRever.appendChild(typeDescRever);
+    cardElement.appendChild(cardInfoRever);
+
+    // Update the card container with the new content
+    divElementCard.innerHTML = '';
+    divElementCard.appendChild(cardElement);
 
     console.log(deck);
 
@@ -160,7 +223,8 @@ function drawCard() {
       restartButtonElementCard.style.display = "block";
 
       divElementCards.classList.add("yellow");
-      divElementCard.innerHTML = `<p class="centerText">Finish!!!!</p>`
+      divElementCard.innerHTML = `<p class="centerText">Finish!!!!</p>`;
+      playSound(youLoseSound);
     }
   }
 }
@@ -179,11 +243,6 @@ function playSound(sound) {
   sound.play();
 }
 
-// Initial Setup
-generateDeck();
-randomize(deck);
-console.log(deck);
-
 // Add event listeners for the buttons
 drawButtonElementCard.addEventListener("click", () => {
   drawCard();
@@ -194,3 +253,19 @@ restartButtonElementCard.addEventListener("click", () => {
   restartGame();
   playSound(shuffleSound);
 });
+
+// Add event listener for the start button
+startButtonElement.addEventListener("click", () => {
+  // Start the background music
+  playSound(backgroundSound);
+
+  // Hide the start button and show the draw button
+  startButtonElement.style.display = "none";
+  drawButtonElementCard.style.display = "block";
+
+});
+
+// Initial Setup
+generateDeck();
+randomize(deck);
+console.log(deck);
