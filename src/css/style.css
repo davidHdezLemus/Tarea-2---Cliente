@@ -2,7 +2,7 @@
   --font-family: 'Diablo', sans-serif;
   --font-size-large: 3rem;
   --font-size-medium: 1rem;
-  --font-size-small: 0.75rem;
+  --font-size-small: 0.65rem;
   --color-gradient-black: linear-gradient(to right, black, darkgrey);
   --color-gradient-green: linear-gradient(to right, darkgreen, lightgreen);
   --color-gradient-blue: linear-gradient(to right, darkblue, lightblue);
@@ -106,6 +106,7 @@ body {
 .card-desc-rever {
   font-size: var(--font-size-small);
   text-align: justify;
+  margin-top: 5px;
 }
 
 .card-text,

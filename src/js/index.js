@@ -46,8 +46,13 @@ const drawButtonElementCard = document.createElement("button");
 drawButtonElementCard.textContent = "Draw Card";
 drawButtonElementCard.setAttribute("id", "draw-button");
 drawButtonElementCard.classList.add("button-78");
-drawButtonElementCard.style.display = "none"; // Initially hidden
+drawButtonElementCard.style.display = "none";
 divElementButtons.appendChild(drawButtonElementCard);
+
+// Container for the restart button
+const divRestartButtonContainer = document.createElement("div");
+divRestartButtonContainer.setAttribute("id", "restart-button-container");
+divElementBody.appendChild(divRestartButtonContainer);
 
 // Restart Button
 const restartButtonElementCard = document.createElement("button");
@@ -55,7 +60,7 @@ restartButtonElementCard.textContent = "Restart Game";
 restartButtonElementCard.setAttribute("id", "restart-button");
 restartButtonElementCard.classList.add("button-78");
 restartButtonElementCard.style.display = "none";
-divElementButtons.appendChild(restartButtonElementCard);
+divRestartButtonContainer.appendChild(restartButtonElementCard);
 
 // Start Game Button
 const startButtonElement = document.createElement("button");
@@ -256,13 +261,10 @@ restartButtonElementCard.addEventListener("click", () => {
 
 // Add event listener for the start button
 startButtonElement.addEventListener("click", () => {
-  // Start the background music
   playSound(backgroundSound);
 
-  // Hide the start button and show the draw button
   startButtonElement.style.display = "none";
   drawButtonElementCard.style.display = "block";
-
 });
 
 // Initial Setup
